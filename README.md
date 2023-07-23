@@ -11,6 +11,8 @@ This version of LFI Suite is able to scan Local File Inclusion vulnerabilities u
 
 Automatic update functionality was also REMOVED to more easily facilitate its usage in tunneling and proxy scenarios.
 
+Could not get termcolor working, so it was (sadly) also removed. Output isn't pretty, but it is functional.
+
 All credit to the original author, d35m0nd142. Sorry to take a machete to your great tool just to satisfy OSCP exam requirements ;-) 
 
 * * * 
