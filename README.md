@@ -5,8 +5,6 @@
 
 # LFI Suite
 
-![alt tag](https://github.com/D35m0nd142/LFISuite/blob/master/screen.png)
-
 <h3> What is LFI Suite? </h3>
 
 This version of LFI Suite is able to scan Local File Inclusion vulnerabilities using many different methods. Note that this version has NO automatic exploit functionality, as this would prevent its use on the OSCP exam.
