@@ -61,7 +61,22 @@ except:
 import threading
 from random import randint
 
-netcat_url = "https://github.com/D35m0nd142/LFISuite/raw/master/nc.exe"
+# Some required variables
+netcat_url = False
+ahactive     = False
+ahurl        = ""
+ahenvurl     = ""
+ahlogurl     = ""
+ahfdurl      = ""
+ahwebsite    = ""
+ahfd_errPage = ""
+ahpath       = ""
+ahpaths      = []
+ahlogs       = []
+ahfd         = []
+ahenv        = []
+ahcnf        = []
+ahgen        = []
 LFS_VERSION = '1.13' # DO NOT MODIFY THIS FOR ANY REASON!!
 
 #-------------------------------------------------------------------Generic------------------------------------------------------------#
