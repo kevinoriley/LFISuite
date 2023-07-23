@@ -1753,7 +1753,7 @@ validChoice = (choice == "1" or choice == "2" or choice == "x")
 
 while(validChoice is False):
 	print "--------------------"
-	print " 1) Exploiter       "
+	print " 1) Exploiter (DISABLED)"
 	print " 2) Scanner         "
 	print " x) Exit            "
 	print "--------------------"
@@ -1791,56 +1791,32 @@ while(validChoice is False):
 				print ("\n.:: LFI Exploiter ::.\n", "white")
 				print "____________________________\n"
 				print "    Available Injections    "
+				print "      NONE AVAILABLE   "
+				print "Intentionally removed for OSCP"
 				print "____________________________\n"
-				print " 1) /proc/self/environ      "
-				print " 2) php://filter            "
-				print " 3) php://input             "
-				print " 4) /proc/self/fd           " 
-				print " 5) access_log              "
-				print " 6) phpinfo                 "
-				print " 7) data://		    	   " 
-				print " 8) expect://		  	   " 
-				print " 9) Auto-Hack  			   "
+#				print " 1) /proc/self/environ      "
+#				print " 2) php://filter            "
+#				print " 3) php://input             "
+#				print " 4) /proc/self/fd           " 
+#				print " 5) access_log              "
+#				print " 6) phpinfo                 "
+#				print " 7) data://		    	   " 
+#				print " 8) expect://		  	   " 
+#				print " 9) Auto-Hack  			   "
 				print " x) Back 				   "
 				print "____________________________"
 				echoice = raw_input("\n -> ")
 
 				if(echoice == "1" or echoice == "a"):
-					printChoice("/proc/self/environ") # 
-					run_self_environ()
 				elif(echoice == "2" or echoice == "b"):
-					printChoice("php://filter wrapper")
-					run_phpfilter()
 				elif(echoice == "3" or echoice == "c"):
-					printChoice("php://input wrapper")
-					run_phpinput()
-					print "\n[-] This website is not vulnerable to the php://input injection attack.\n"
 				elif(echoice == "4" or echoice == "d"):
-					printChoice("/proc/self/fd")
-					run_self_fd() 
-					print "\n[!] This website is not vulnerable to the /proc/self/fd attack!\n"
 				elif(echoice == "5" or echoice == "e"):
-					printChoice("Access log")
-					run_access_log()
 				elif(echoice == "6" or echoice == "f"):
-					printChoice("phpinfo")
-					run_phpinfo()
-				   	print "\n[!] This website is not vulnerable to the phpinfo injection attack!\n"
 				elif(echoice == "7" or echoice == "g"):
-					printChoice("data:// wrapper")
-					run_data()
-					print "\n[!] This website is not vulnerable to the data:// injection attack!\n"
 				elif(echoice == "8" or echoice == "h"):
-					printChoice("expect:// wrapper")
-					run_expect()
-					print "\n[!] This website is not vulnerable to the expect:// injection attack!\n"
 				elif(echoice == "9" or echoice == "i"):
-					printChoice("Auto Hack")
-					run_autoHack()
-					print "\n[!] This website is not vulnerable to any of our attacks!\n"
 				elif(echoice == "10" or echoice == "x"):
-					print ""
-					validChoice = False
 				else:
 					invalidChoice()
 	else:
