@@ -1644,6 +1644,7 @@ while(validChoice is False):
 				echoice = raw_input("\n -> ")
 
 				if(echoice == "1" or echoice == "a"):
+					invalidChoice()
 				else:
 					invalidChoice()
 	else:
