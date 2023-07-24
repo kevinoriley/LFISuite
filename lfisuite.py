@@ -63,7 +63,7 @@ from random import randint
 
 # Some required variables
 netcat_url = False
-ahactive     = False
+ahactive     = False # Will always remain false, as there is no longer an input method to change this variable at runtime
 ahurl        = ""
 ahenvurl     = ""
 ahlogurl     = ""
@@ -107,9 +107,9 @@ def banner():
 	"""
 
 	print "/*-----------------------------------------------------------------------------------*\\"
-	print "| Local File Inclusion Automatic Scanne                                              |"
+	print "| Local File Inclusion Automatic Scanner                                             |"
 	print "|                                                                                    |"
-	print "| Modules: AUTO-HACK, /self/environ, /self/fd, phpinfo, php://input,                 |"
+	print "| Modules: /self/environ, /self/fd, phpinfo, php://input,                            |"
 	print "|          data://, expect://, php://filter, access logs                             |"
 	print "|                                                                                    |"
 	print "| Original Author: D35m0nd142, <d35m0nd142@gmail.com> https://twitter.com/d35m0nd142 |"
@@ -1527,7 +1527,7 @@ def scanner():
 		fname = "pathtotest.txt"
 	fname = checkFilename(fname)
 
-	if(ahactive is False):
+	if(ahactive is False): # Will always be false
 		owebsite = raw_input("[*] Enter the URL to scan (ex: 'http://site/vuln.php?id=') -> ")
 		owebsite = correctUrl(owebsite)
 		owebsite = checkHttp(owebsite)
@@ -1645,15 +1645,6 @@ while(validChoice is False):
 				print "      NONE AVAILABLE   "
 				print "Intentionally removed for OSCP"
 				print "____________________________\n"
-#				print " 1) /proc/self/environ      "
-#				print " 2) php://filter            "
-#				print " 3) php://input             "
-#				print " 4) /proc/self/fd           " 
-#				print " 5) access_log              "
-#				print " 6) phpinfo                 "
-#				print " 7) data://		    	   " 
-#				print " 8) expect://		  	   " 
-#				print " 9) Auto-Hack  			   "
 				print " x) Back 				   "
 				print "____________________________"
 				echoice = raw_input("\n -> ")
